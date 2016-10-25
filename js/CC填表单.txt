@@ -1,0 +1,80 @@
+function DelayBox(){
+	this.funcs = new Array();
+	
+}
+DelayBox.prototype.execute = function(ts,func){
+	var max = this.funcs.length-1;
+	recursionInvoke(this.funcs,0,max);
+}
+function recursionInvoke(arr,i,max){
+	var one = arr[i];
+	var _func = one.func;
+	var _ts = one.ts;
+	print('delay:'+_ts+' -> func.'+ (i+1));
+	setTimeout(function(){
+		var ret = _func();
+		
+		if(i < max && ret!=false){
+			recursionInvoke(arr,i+1,max);
+		} else {
+			print('execute over...');
+		}
+	},_ts);
+	
+}
+
+	
+DelayBox.prototype.push = function(ts,func){
+	var one = {};
+	one.ts = ts;
+	one.func = func;
+	this.funcs.push(one);
+}
+
+function sleep(ms) {
+	var s_ts = ts();
+	while(ts() - s_ts < ms){
+		
+	}
+}
+function getTs() {
+	return new Date().getTime();
+}
+function print(msg) {
+	console.log(msg);
+}
+var box = new DelayBox();
+var commons_interval = 4000;
+box.push(0,function(){
+	$("#hotelSearch").click();
+});
+
+box.push(commons_interval,function(){
+	if($("a.see").length > 0 ) {
+		$("a.see:eq(0)").click();
+	} else {
+		print('找不到"查看"按钮');
+		return false;
+	}
+});
+
+box.push(commons_interval,function(){
+	if($("a.booking").length > 0 ) {
+		$("a.booking:eq(0)").click();
+	} else {
+		print('找不到"等待"按钮');
+		return false;
+	}
+});
+
+box.push(commons_interval,function(){
+	$("#orderblock #roomNum").val(1);
+	$("#checkInName1").val("测试入住");
+	$("#contactName").val("测试联系");
+	$("#contactMobile").val("13761156786");
+	$("#remarks").val("测试备注");
+	$("#mPassword").val("123456");
+});
+
+box.execute();
+

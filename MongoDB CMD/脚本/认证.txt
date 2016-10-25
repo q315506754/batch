@@ -1,0 +1,156 @@
+zzy
+didatour
+
+mongo --port 30000
+
+use DidatourNew;
+db.auth('client','12345');
+use DidatourLogNew;
+db.auth('client','12345');
+use DidatourNew;
+
+db.Order.aggregate([{$match:{status:"PAD"}},{$group:{_id:"$orderId"}},{$limit:5}])
+
+db.Order.aggregate([{$match:{status:"PAD"}},{$group:{"_id":"$orderId",total:{$sum:"$totalPrice"}}},{$limit:5}])
+
+db.Order.aggregate([{$match:{status:"PAD"}},{$limit:5},{$group:{_id:"$orderId"}}])
+db.Order.aggregate([{$limit:5},{$match:{status:"PAD"}},{$group:{_id:"$orderId"}}])
+db.Order.aggregate([{$limit:5},{$match:{status:"PAD"}},{$group:{_id:"$orderId"}}])
+db.Order.aggregate([{ $sample: { size: 3 }}])
+db.Order.aggregate([{$match:{status:"PAD"}},{$limit:5},{$project:{status:1}},{$group:{_id:"$orderId",total:{$sum:"$totalPrice"}}}])
+db.Order.aggregate([{$match:{status:"PAD"}},{$limit:5},{$group:{_id:"$orderId",total:{$sum:"$totalPrice"}}},{$project:{status:1,total:true,_id_substr:{$substr:["$_id",0,3]}}}])
+,direct:{$literal:1}
+
+
+db.Order.mapReduce(function(){
+	emit(this.orderId,this.totalPrice);
+},function(orderId,totalPrices){
+	return Array.sum(totalPrices);
+},{
+	query:{status:"PAD"},
+	limit:5,
+	out:"Order.md"
+});
+db.Order.md.find().toArray();
+
+db.Order.mapReduce(function(){
+	var data = {count:1,totalPrice:this.totalPrice,prices:[this.totalPrice]};
+	var key = this.orderId;
+	emit(key,data);
+},function(orderId,countObjVals){
+	var  reducedVal = { count: 0, totalPrice: 0 ,prices:[],reduced:true};
+	
+	for (var idx = 0; idx < countObjVals.length; idx++) {
+		 reducedVal.count += countObjVals[idx].count;
+		 reducedVal.totalPrice += countObjVals[idx].totalPrice;
+		 reducedVal.prices.push(countObjVals[idx].totalPrice);
+	 }
+					 
+	return reducedVal;
+},{
+	query:{status:"PAD"},
+	out:"Order.md",
+	finalize:function(key,val){
+		val.avgPrice = val.totalPrice / val.count;
+		return val;
+	}
+});
+db.Order.md.find().toArray();
+
+db.Order.md.find({"value.count":{$gt:1}}).toArray();
+
+db.Order.md.remove({});
+db.Order.md.count()
+
+db.Order.aggregate([{$limit:5},{$project:{status:1,totalPrice:true,_id_substr:{$substr:["$orderId",0,3]}}}])
+{$project:{_id_substr:{$substr:["$orderId",0,3]}}}
+
+var xx = db.Orders.aggregate([{$match:{status:"PAD"}},{$group:{_id:"$orderId",total:{$sum:"$totalPrice"}}}])
+xx.forEach(function(a){
+printjson(a);
+})
+db.Order.aggregate([{$match:{status:"PAD"}},{$group:{_id:"$orderId",total:{$sum:"$totalPrice"}}},{$project:{orderId:1,total:1}}])
+
+db.Order.aggregate([{$match:{status:"PAD"}},{$project:{orderId:1,total:1}}])
+
+var xx =new Array();
+xx.push('111');
+xx.push('222');
+xx.push('333');
+xx.lastIndexOf('11');
+xx.lastIndexOf('111');
+xx.lastIndexOf('222');
+
+var ss= new String();
+var nn = 1+"";
+
+var m = db.Member.find({mobile:"13761156786"})
+db.Member.remove(m)
+
+11033549
+ :11033550
+
+mongo 192.168.6.8:37584
+use admin
+db.auth("Readuser","Reader1")
+use DidatourLogNew
+
+db.PayLog.findOne();
+db.PayLog.findOne({orderId:"11422064"});
+db.PayLog.find({orderId:"11422064"}).toArray()
+db.PayLog.find({orderId:"11422188"}).toArray()
+db.PayLog.find({}).sort({createTime:-1}).limit(10).toArray()
+ db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("539e9e07e4b0a23ea62ded4b"),"prizeType" : 1 ,prize:{$gt:0}},{orderId:1,orderTotalPrice:1,orderSubscriberName:1,prize:1})
+
+
+db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("539e9e07e4b0a23ea62ded4b"),"prizeType" : 1 },{orderId:1,orderTotalPrice:1,orderSubscriberName:1,prize:1}).sort({prize:-1})
+
+db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("539e9e07e4b0a23ea62ded4b"),"prizeType" : 1 },{}).sort({prize:-1})
+
+db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("539e9e07e4b0a23ea62ded4b"),"prizeType" : 1 }).sort({orderCreateTime:-1})
+
+db.HHE.AgentPrizeDetail.distinct("orderSubscriberName",{ "agentHHEMemberId" : ObjectId("539e9e07e4b0a23ea62ded4b"),"prizeType" : 1 })
+
+db.HHE.AgentPrizeDetail.distinct("orderSubscriberMobile",{ "agentHHEMemberId" : ObjectId("539e9e07e4b0a23ea62ded4b"),"prizeType" : 1 })
+
+
+db.HHE.AgentWithdrawLog.find({ "hheMemberId" : ObjectId("539e9e07e4b0a23ea62ded4b")})
+
+db.HHE.AgentPrizeDetail.findOne({ "prizeType" : 1});
+db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("5285255b24277fb4c570b5af"),"prizeType" : 2}).toArray();
+db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("5285255b24277fb4c570b5af"),"prizeType" : 1 }).count()
+db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("5285255b24277fb4c570b5af"),"prizeType" : 1 ,"orderType":{$ne:0}}).count()
+
+db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("5285255b24277fb4c570b5af"),"orderType":{$ne:0}}).toArray()
+var view = {_id:-1,orderId:1,prize:1,prizeType:1,orderType:1,calcType:1,remark:1,orderSubscriberName:1};
+db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("5285255b24277fb4c570b5af"),"prizeType" : 1 },view ).toArray()
+db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("5285255b24277fb4c570b5af"),"prizeType" : 1 ,"calcType":-1},view ).toArray()
+db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("5285255b24277fb4c570b5af"),"prizeType" : 1 ,"calcType":1},view ).toArray()
+
+db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("5285255b24277fb4c570b5af"),"orderType":{$ne:0},"prizeType" : 1 },{orderId:1,prize:1,orderStartDateStr:1,orderEndDateStr:1,orderCreateTimeStr:1,orderCreateTime:1,remark:1}).toArray()
+
+{type:{$ne:0},createTime:{$lte:1406649600000},subscriber:{$in:[...]}}
+{type:{$ne:0},createTime:{$lte:1406649600000},subscriber:{$in:[ObjectId("533bd741e4b09a7c68b2dd91"),ObjectId("5333d97ee4b0ca5e8a029971"),ObjectId("536b44b2e4b0b9b1dc9955ec"),ObjectId("529eec24e4b00fb397369b92"),ObjectId("536b4942e4b0b9b1dc99569f"),ObjectId("5285255b24277fb4c570b5af")]}}
+var xx = db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("5285255b24277fb4c570b5af"),"prizeType":1}).toArray()
+var subs = new Array();
+for(var x in xx){
+	var json = xx[x];
+	var hheMemId = json.orderSubscriber+"";
+	if( subs.indexOf(hheMemId) == -1) {
+		subs.push(hheMemId);
+	}
+}
+if( subs.indexOf("5285255b24277fb4c570b5af") == -1) {
+	subs.push("5285255b24277fb4c570b5af");
+}
+subs
+var objIdStr= "";
+for(var i in subs) {
+	objIdStr = objIdStr + "ObjectId(\""+subs[i]+"\"),"
+} 
+objIdStr = objIdStr.substring(0,objIdStr.length-1)
+objIdStr
+
+db.HHE.AgentWithdrawRec.findOne({ "hheMemberId" : ObjectId("5285255b24277fb4c570b5af")})
+
+

@@ -1,0 +1,22 @@
+var mobile="13918595010";
+
+function searchMember(m) {
+	return db.Member.findOne({"mobile":m});
+}
+
+function searchHHEMember(memberId) {
+	return db.HHE.Member.findOne({"memberId":memberId});
+}
+
+use DidatourNew;
+//db.auth('client','12345');
+var member = searchMember(mobile);
+var memberId = member._id + "";
+print("memberId~~~~~~"+memberId);
+var HHEmember = searchHHEMember(memberId);
+var HHEmemberId = HHEmember._id + "";
+print("HHEmemberId~~~~~~"+HHEmemberId);
+
+use DidatourLogNew;
+//db.auth('client','12345');
+db.HHE.AgentWithdrawLog.find({"hheMemberId":ObjectId(HHEmemberId)}).sort({withdrewTime:-1}).toArray();

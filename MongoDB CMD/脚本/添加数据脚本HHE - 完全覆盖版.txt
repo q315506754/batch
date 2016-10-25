@@ -1,0 +1,121 @@
+﻿var projectName="权限管理工程";
+var requiredResourceKey="Rights_login";
+var requiredResourceUrl="http://192.168.6.11:8080/HHERightsManager/";
+var requiredRoleName="权限管理-登陆跳转角色";
+var adminResourceKey="Rights_SuperAdmin";
+var adminRoleName="权限管理-管理员角色";
+var mobile="1234567890";
+var password="e10adc3949ba59abbe56e057f20f883e";
+var memberId;
+var HHE = function(){
+	 var project = db.HHE.Project.findOne({"projectName":projectName});
+	if(null===project||undefined===project){
+		project = {
+			"projectName":projectName           
+		};
+		db.HHE.Project.save(project);
+	}
+   
+	var requiredResource = db.HHE.Resource.findOne({"key":requiredResourceKey}); 
+	if(null===requiredResource||undefined===requiredResource){
+		requiredResource = {
+			"name":"权限管理-登陆跳转",
+			"isEnable":true,
+			"description":requiredResourceUrl,
+			"type":"Login",
+			"projectId":project._id,
+			"key":requiredResourceKey
+		};
+		db.HHE.Resource.save(requiredResource);
+	}
+	
+	var requiredRole = db.HHE.Role.findOne({"name":requiredRoleName}); 
+	if(null===requiredRole||undefined===requiredRole){
+		requiredRole = {
+			"name":requiredRoleName,
+			"isEnable":true,
+			"description":requiredRoleName,
+			"projectId":project._id,
+			"resources":[requiredResource._id]
+		};
+		db.HHE.Role.save(requiredRole);
+	}else{
+		requiredRole.resources = [requiredResource._id];
+		db.HHE.Role.save(requiredRole);
+	}
+	
+	var adminResource = db.HHE.Resource.findOne({"key":adminResourceKey}); 
+	if(null===adminResource||undefined===adminResource){
+		adminResource = {
+			"name":"权限管理-管理员",
+			"isEnable":true,
+			"description":"权限管理-管理员",
+			"type":"Common",
+			"projectId":project._id,
+			"key":adminResourceKey
+		};
+		db.HHE.Resource.save(adminResource);
+	}
+	
+	var adminRole = db.HHE.Role.findOne({"name":adminRoleName}); 
+	if(null===adminRole||undefined===adminRole){
+		adminRole = {
+			"name":adminRoleName,
+			"isEnable":true,
+			"description":adminRoleName,
+			"projectId":project._id,
+			"resources":[adminResource._id]
+		};
+		db.HHE.Role.save(adminRole);
+	}else{
+		adminRole.resources = [adminResource._id,requiredResource._id];
+		db.HHE.Role.save(adminRole);
+	}
+	
+	var member = db.Member.findOne({"mobile":mobile}); 
+	if(null===member||undefined===member){
+		var createTim = new Date().getTime()+""; 
+		member = {
+			"mobile":mobile,
+			"isEnable":true,
+			"createTime":password,
+			"createTime" : NumberLong(createTim),
+			"email":"",
+			"smsTarget" : false
+		};
+		db.Member.save(member);
+	}else{
+	   member.isEnable = true;
+	   db.Member.save(member);
+	}
+	memberId = member._id;
+	
+	var HHEmember = db.HHE.Member.findOne({"memberId":memberId+""}); 
+	if(null===HHEmember||undefined===HHEmember){
+		HHEmember = {
+			"password":password,
+			"memberId":memberId+""
+		};
+		db.HHE.Member.save(HHEmember);
+	}
+	
+	var resourceMap = db.HHE.ResourcesMap.findOne({"ownerId":member._id}); 
+	if(null===resourceMap||undefined===resourceMap){
+		resourceMap={
+			"ownerId" : member._id,
+			"roles" : [adminRole._id,requiredRole._id]
+		}
+	}else{
+		resourceMap.roles = [adminRole._id,requiredRole._id];
+	}
+	db.HHE.ResourcesMap.save(resourceMap);
+}
+HHE();
+db.HHE.Project.findOne({"projectName":projectName});
+db.HHE.Resource.findOne({"key":requiredResourceKey}); 
+db.HHE.Role.findOne({"name":requiredRoleName}); 
+db.HHE.Resource.findOne({"key":adminResourceKey});
+db.HHE.Role.findOne({"name":adminRoleName}); 
+db.Member.findOne({"mobile":mobile}); 
+db.HHE.Member.findOne({"memberId":memberId+""}); 
+db.HHE.ResourcesMap.findOne({"ownerId":memberId});

@@ -1,0 +1,1 @@
+scp DubboService.war user@172.16.0.46:/home/user/apache-tomcat-7.0.42/webapps/DubboService.war

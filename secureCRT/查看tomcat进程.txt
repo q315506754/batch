@@ -1,0 +1,7 @@
+#$language = "JScript"
+#$interface = "1.0"
+
+function main() { 
+
+	crt.Screen.send("ps -ef|more| grep tomcat\r\n");
+}

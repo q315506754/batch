@@ -1,0 +1,115 @@
+use DidatourLogNew;
+use DidatourNew;
+
+
+var agent_projectName="企业版代理人平台";
+var roleName="INVITE_isAllow";
+
+function getProject(projectName) {
+	return db.HHE.Project.findOne({"projectName":projectName});
+}
+function getResource(resourceName,projectId) {
+	return db.HHE.Resource.findOne({"key":resourceName,"projectId":projectId});
+}
+function getRoleContainsResource(resourceId,projectId) {
+	return db.HHE.Role.findOne({"projectId":projectId,"resources":{"$all":[resourceId]}});
+}
+function getRole(roleName,projectId) {
+	return db.HHE.Role.findOne({"projectId":projectId,"name":roleName});
+}
+function printMemInfo(member) {
+	print("member:"+member.mobile+' ' + member.name);
+}
+function getAllMemberWhichExistHHEMember() {
+	var hheIds = new Array();
+	var hheCur = db.HHE.Member.find();
+	hheCur.forEach(function(hheOne){
+		if(hheOne.memberId != undefined && hheOne.memberId.length == 24){
+			hheIds.push(ObjectId(hheOne.memberId));
+		}
+	});
+	//print("hheIds:"+JSON.stringify(hheIds));
+	return hheIds;
+}
+function getMembersInIds(memberIds) {
+	return db.Member.find({"_id":{"$in":memberIds}});
+}
+function getHHEResourcesMap(memberId) {
+	return db.HHE.ResourcesMap.findOne({"ownerId":memberId});
+}
+function getHHEMember(member) {
+	return db.HHE.Member.findOne({"memberId":""+member._id});
+}
+function isHHEMemberASubAccount(hheMember) {
+	var ret = false;
+	if(hheMember.recMemberId != undefined && hheMember.recMemberId.length == 24) {
+		ret = true;
+	}
+	return ret;
+}
+function arrayContains(arr,id) {
+	for(var i=0;i<arr.lenth;i++) {
+		if(arr[i] === id) {
+			return true;
+		}
+	}
+	return false;
+}
+var projectId = getProject(agent_projectName);
+var loginRole = getRole(roleName,projectId._id);
+var allHHEMemberIds = getAllMemberWhichExistHHEMember();
+var members = getMembersInIds(allHHEMemberIds);
+
+
+
+
+
+
+
+
+
+
+
+
+function getHHEMemberByStr(memberId) {
+	return db.HHE.Member.findOne({"_id":ObjectId(memberId)});
+}
+
+function searchRecHHEMembers(hhememberId) {
+	return db.HHE.Member.find({"recMemberId":{$exists:true}}).toArray();
+	db.users.find({name: {$exists: true}});
+}
+function searchMember(mobile) {
+	return db.Member.findOne({"mobile":mobile});
+}
+function searchMemberById(id) {
+	return db.Member.findOne({"_id":ObjectId(id)});
+}
+function searchHHEMember(memberId) {
+	return db.HHE.Member.findOne({"memberId":memberId});
+}
+function searchHHEMemberById(id) {
+	return db.HHE.Member.findOne({"_id":ObjectId(id)});
+}
+function searchRecHHEMembers(hhememberId) {
+	return db.HHE.Member.find({"recMemberId":hhememberId}).toArray();
+}
+function isObjectStrId(str){
+	return str&&str.length==24;
+}
+var agentHHEIds = db.HHE.Member.distinct("recMemberId");
+var col = {};
+for(var i=0;i<=agentHHEIds.length;i++){
+	var one = {};
+	var oneId = agentHHEIds[i];
+	if(isObjectStrId(oneId)){
+		var HHEOne = getHHEMemberByStr(oneId);
+		if(HHEOne && isObjectStrId(HHEOne.memberId)){
+			var memOne=searchMemberById(HHEOne.memberId);
+			one.name=memOne.name;
+			one.mobile=memOne.mobile;
+			col[oneId] = one;
+		}
+	}
+}
+printjsononeline(col);

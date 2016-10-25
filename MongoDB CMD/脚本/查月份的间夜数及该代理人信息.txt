@@ -1,0 +1,169 @@
+var mobile="13918595010";
+var dateTime="2014/06/01";
+//正式库转不了
+var parse = new Date(dateTime).getTime();
+//var parse = 1398873600000;
+var nextMonth = new Date();
+nextMonth.setTime(parse);
+nextMonth.setMonth(nextMonth.getMonth()+1);
+var nextMonthTime = nextMonth.getTime();
+var ONEDAYTIME = 24*60*60*1000;
+var OFFSETTIME = 4*ONEDAYTIME;
+var NOWTIME = new Date().getTime();
+var orderSubscribes = new Array();
+function searchMember(mobile) {
+	return db.Member.findOne({"mobile":mobile});
+}
+function searchMemberById(id) {
+	return db.Member.findOne({"_id":ObjectId(id)});
+}
+function searchHHEMember(memberId) {
+	return db.HHE.Member.findOne({"memberId":memberId});
+}
+function searchHHEMemberById(id) {
+	return db.HHE.Member.findOne({"_id":ObjectId(id)});
+}
+function searchRecHHEMembers(hhememberId) {
+	return db.HHE.Member.find({"recMemberId":hhememberId}).toArray();
+}
+//查询自己和所有下线
+var member = searchMember(mobile);
+var memberId = member._id + "";
+var HHEmember = searchHHEMember(memberId);
+var HHEmemberId = HHEmember._id + "";
+var downHHEMembers = searchRecHHEMembers(HHEmemberId);
+orderSubscribes.push(HHEmember._id);
+for(var i=0;i<downHHEMembers.length;i++) {
+	orderSubscribes.push(downHHEMembers[i]._id);
+}
+var query = {};
+query["status"] = "CNF";
+query["createTime"] = {"$gte":parse,"$lt":nextMonthTime};
+query["subscriber"] = {"$in" : orderSubscribes};
+var view = {orderId:1,subOrderId:1,status:1,createTime:1,totalPrice:1,quantity:1,subscriber:1,startDate:1,endDate:1};
+var orders = db.Order.find(query,view).sort({"startDate":1}).toArray();
+for(var i = 0;i<orders.length;i++) {
+	var subsHHE = orders[i].subscriber+"";
+	var subsHHEmember = searchHHEMemberById(subsHHE);
+	if(subsHHEmember != null) {
+		var subsMember = searchMemberById(subsHHEmember.memberId);
+		if(subsMember != null) {
+			orders[i].subscriberMobile = subsMember.mobile;
+			orders[i].subscriberName = subsMember.name;
+		}
+	}
+}
+var analyse = {};
+//统计mobile
+for(var i = 0;i<orders.length;i++) {
+	var key = orders[i].subscriberMobile + "";
+	if(analyse[key] == undefined) {
+		var njson = {};
+		njson.mobile = key;
+		njson.subscriberName = orders[i].subscriberName;
+		njson.orders = {};
+		analyse[key] = njson;
+	}
+}
+//统计mobile下各订单及订单下的子单
+for(var i = 0;i<orders.length;i++) {
+	var key = orders[i].subscriberMobile + "";
+	var orderId = orders[i].orderId + "";
+	
+	var mapOrders = analyse[key].orders;
+	
+	if(mapOrders[orderId] == undefined) {
+		mapOrders[orderId] = {subOrderIds:new Array(),quantity:orders[i].quantity,status:orders[i].status,totalPrice:0.0,startDate:orders[i].startDate.toNumber(),endDate:orders[i].endDate.toNumber()};
+	}
+}
+
+//计算各订单入住离店日期
+for(var i = 0;i<orders.length;i++) {
+	var key = orders[i].subscriberMobile + "";
+	var orderId = orders[i].orderId + "";
+	var startDate = orders[i].startDate.toNumber();
+	var endDate = orders[i].endDate.toNumber();
+	var mapOrders = analyse[key].orders;
+	
+	var orderOne  = mapOrders[orderId] ;
+	if(startDate < orderOne.startDate) {
+		orderOne.startDate = startDate;
+	}
+	if(endDate > orderOne.endDate) {
+		orderOne.endDate = endDate;
+	}
+}
+
+//计算各订单间夜
+for(var i = 0;i<orders.length;i++) {
+	var key = orders[i].subscriberMobile + "";
+	var orderId = orders[i].orderId + "";
+	var mapOrders = analyse[key].orders;
+	var orderOne  = mapOrders[orderId] ;
+	var night = (orderOne.endDate - orderOne.startDate) / ONEDAYTIME;
+	var nightRoom = orderOne.quantity * night;
+	orderOne.night = night;
+	orderOne.nightRoom = nightRoom;
+}
+
+//查询子单
+for(var i = 0;i<orders.length;i++) {
+	var key = orders[i].subscriberMobile + "";
+	var orderId = orders[i].orderId + "";
+	var subOrderId = orders[i].subOrderId + "";
+	var mapOrders = analyse[key].orders;
+	var mainId = mapOrders[orderId];
+	var subs = mainId.subOrderIds;
+	subs.push(subOrderId);
+}
+
+//累加各子单的totalPrice
+for(var i = 0;i<orders.length;i++) {
+	var key = orders[i].subscriberMobile + "";
+	var orderId = orders[i].orderId + "";
+	var subOrderId = orders[i].subOrderId + "";
+	var mapOrders = analyse[key].orders;
+	var mainId = mapOrders[orderId];
+	var totalPrice = orders[i].totalPrice;
+	mainId.totalPrice+=totalPrice;
+}
+
+function isEndDateLegal(endDate) {
+	return (endDate + OFFSETTIME) < NOWTIME;
+}
+
+//需要离店后四天
+for(var mb in analyse) {
+	var mobileJSON = analyse[mb];
+	var mobileOrdersJSON = mobileJSON.orders;
+	for(var orderIdOne in mobileOrdersJSON) {
+		var orderOne = mobileOrdersJSON[orderIdOne];
+		var ed = orderOne.endDate;
+		//print(orderOne + " endDate:" +ed + " cmp " + (NOWTIME - OFFSETTIME));
+		if(!isEndDateLegal(ed)) {
+			delete mobileOrdersJSON[orderIdOne];
+		}
+	}
+}
+print("---------------------------");
+printjsononeline(analyse);
+print("---------------------------");
+var totalPrices = 0.0;
+var totalNightRooms = 0;
+for(var oOne in analyse) {
+	//print("oOne~~~~~~"+oOne);
+	var oOneOrders = analyse[oOne].orders;
+	for(var oOrder in oOneOrders) {
+		var oOrderOne = oOneOrders[oOrder];
+		totalPrices+=oOrderOne.totalPrice;
+		totalNightRooms+=oOrderOne.nightRoom;
+	}
+}
+print("totalPrices~~~~~~"+totalPrices);
+print("totalNightRooms~~~~~~"+totalNightRooms);
+
+print('该账号Member:');
+printjson(member);
+print('该账号HHEMember:');
+printjson(HHEmember);
+

@@ -1,0 +1,122 @@
+报表工程
+url:http://172.16.0.52:8080/SpringMVCProject/
+管理员账号:fengwei
+密码:ufwtfie
+
+
+/opt/tomcat/webapps
+user
+Didatour52
+
+/home/user/taobao/Mail
+. crontab -e
+
+
+172.16.0.46
+user
+Didatour46
+
+
+172.16.0.2
+zzy
+didatour
+
+insert a | i
+save :wq
+quit :q!
+
+ps -aux 
+ps -aux | grep tomcat
+sudo ./shutdown.sh
+sudo ./startup.sh
+cd /opt/tomcat/bin
+tail -f cd /opt/tomcat/logs/catalina.out
+
+查看perl执行日志
+select * from fact_sp_exec_log order by insertDT desc
+
+查看报表点击日志
+select * from factreport_log  order by loginDate desc
+
+
+
+1.SQL Server服务器远程连接
+--------------------------
+IP:192.168.5.2
+USERNAME:rdsuser
+PASSWORD:Didatour4321
+
+2.SQL Server服务器地址
+--------------------------
+SERVERNAME:192.168.5.2,1433\Bidding
+USERNAME:sa
+PASSWORD:ufwtfie_123
+
+3.mongo 测试库
+--------------------------
+host:172.16.0.2 
+port:30000
+Database:DidatourNew
+user:client
+password:12345
+
+4.服务器
+--------------------------
+host:172.16.0.11 
+user:root 
+password:ufwtfie
+
+5.数据迁移相关库
+--------------------------
+[mongoconfig]
+host=192.168.6.9
+port=37584
+database=DidatourNew
+mongouser=client
+mongopasswd=b%1j9u9v
+[sqlserverconfig]
+odbc=dbcenter
+username=sa
+password=ufwtfie_123
+
+服务管理器/任务
+
+mongo 192.168.6.8:37584
+use admin
+db.auth("Readuser","Reader1")
+use DidatourLogNew
+
+
+git 密码
+ssh://user@172.16.0.52/~/git/SpringMVCProject.git
+user
+Didatour52
+
+dimhr_sales
+
+那张表是这样的
+如果公司内部有新增销售，人事那边会把销售的数据发给你
+然后你手动添加进去
+你那边是维护mongo后台数据，你可以把这个数据做到后台去
+让他们业务那边自己注册，然后你只读数据就行
+就不用这么麻烦了
+
+Q:新增销售的账号  是用来登陆报表的吗
+A:不全是
+因为我们统计的销售数据是和这张表关联
+如果你不增加新增的销售信息，那么，新增的销售的业务数据是没有被通缉的
+统计
+
+Q:统计的销售数据 还跟哪张表有关联啊 
+HHEMember?
+
+恒  11:41:14
+对于一个STAGING_MEMBER
+如果他手机号码对应的dimhr_sales数据的dept是ota的话 这人自己就是销售
+否则这个人所在factpub_enterprise的saleStaff对应的STAGING_MEMBER才是销售
+是这个逻辑吗
+BI 冯伟  11:42:56
+优先判断OTA数据，然后再根据factpub_enterprise的saleStaff判断
+OTA逻辑变动，他们会讲的
+BI 冯伟  11:45:34
+OTA新增的销售是EVA那边提供，她没说，你就不用管

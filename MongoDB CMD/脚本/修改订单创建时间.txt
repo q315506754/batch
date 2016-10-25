@@ -1,0 +1,12 @@
+var orderId="11045017";
+var dateTime="2014/05/20";
+var parse = Date.parse(dateTime);
+print("parsed:"+parse);
+
+var orders = db.Order.find({"orderId":orderId}).toArray();
+for(var i=0;i<orders.length;i++){
+	orders[i].createTime = NumberLong(parse);
+	db.Order.save(orders[i]);
+}
+
+print("over");

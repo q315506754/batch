@@ -1,0 +1,54 @@
+var xx = db.HHE.AgentPrizeDetail.find({ "agentHHEMemberId" : ObjectId("5285255b24277fb4c570b5af"),"prizeType" : 1 }).toArray()
+
+function sumGroup(jsonArr,groupAttrs,addFunc) {
+	var ret = {total:0};
+	for(var x in jsonArr) {
+		var json = jsonArr[x];
+		//var val = json[sumAttr];//deprecated
+		var addedVal = addFunc(ret.total,json)
+		ret.total += addedVal;
+		
+		//创建每层统计
+		createJsonByGroup(ret,json,addedVal,groupAttrs,0,groupAttrs.length-1)
+	}
+	return ret;
+}
+
+function createJsonByGroup(retJson,srcJson,addInValue,groupAttrs,curLayer,maxLayer) {
+	var groupPrefix = "_groupBy_";
+	var layerArr = groupAttrs[curLayer];
+	for(keyIdxForLayer in layerArr){
+		//当前层
+		var keyForLayer = layerArr[keyIdxForLayer];
+		var layerKey = groupPrefix + keyForLayer;
+		var layerJson = retJson[layerKey];
+		if(layerJson == undefined) {
+			layerJson = {};
+			retJson[layerKey] = layerJson;
+		}
+		
+		var layerJsonKey = srcJson[keyForLayer];
+		var layerJsonKeyJson = layerJson[layerJsonKey];
+		if(layerJsonKeyJson == undefined) {
+			layerJsonKeyJson = {total:0};
+			layerJson[layerJsonKey] = layerJsonKeyJson;
+		}
+		layerJsonKeyJson.total+=addInValue;
+		
+		//下一层
+		if(curLayer < maxLayer) {
+			createJsonByGroup(layerJsonKeyJson,srcJson,addInValue,groupAttrs,curLayer+1,maxLayer);
+		}
+	}
+	
+}
+
+var ret = sumGroup(xx,[['orderType','prizeType'],['orderSubscriberName'],['calcType']],function(oldTotal,json) {
+	var val = json['prize'];
+	var calcType = json['calcType']
+	if(calcType < 0 ) {
+		return -val;
+	}
+	return val;
+});
+printjsononeline(ret);

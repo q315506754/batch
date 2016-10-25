@@ -1,0 +1,51 @@
+var orderId="11076637";
+var status="CNF";
+var ONEDAYTIME = 24*60*60*1000;
+var OFFSETTIME = 4*ONEDAYTIME;
+var NOWTIME = new Date().getTime();
+var dates = new Array();
+var startDate;
+var endDate;
+
+//use DidatourNew;
+var orders = db.Order.find({"orderId":orderId}).sort({"startDate":1}).toArray();
+startDate = orders[0].startDate.toNumber();
+var dStartDate = new Date();
+dStartDate.setTime(startDate);
+endDate = orders[orders.length-1].endDate.toNumber();
+var dEndDate = new Date();
+dEndDate.setTime(endDate);
+print("org startDate:"+startDate +" string:"+dStartDate.toLocaleString());
+print("org endDate:"+endDate+" string:"+dEndDate.toLocaleString());
+
+if(NOWTIME - OFFSETTIME <= endDate) {
+	print("need change!");
+	
+	var days = parseInt((endDate - startDate)/ONEDAYTIME);
+	var offsetdays = Math.ceil((endDate -NOWTIME + OFFSETTIME)/ONEDAYTIME);
+	var itStartDate = startDate- offsetdays*ONEDAYTIME;
+	for(var n=0;n<days;n++){
+		var newItem = {};
+		newItem.startDate = itStartDate;
+		newItem.endDate = itStartDate+ONEDAYTIME;
+		dates.push(newItem);
+		
+		itStartDate+=ONEDAYTIME;
+	}
+}
+
+var edit = function(){
+	var orders = db.Order.find({"orderId":orderId}).sort({"startDate":1});
+	print("editing");
+	var minlength = dates.length < orders.length()? dates.length:orders.length();
+	print("loop total:"+minlength);
+	for(var i=0;i<minlength;i++){
+		orders[i].startDate = NumberLong(dates[i].startDate);
+		orders[i].endDate = NumberLong(dates[i].endDate);
+		orders[i].status = status;
+		db.Order.save(orders[i]);
+	}
+	print("edit over~~~~~~");
+}
+edit();
+print("over!");

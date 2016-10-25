@@ -1,0 +1,45 @@
+mongoexport --host 192.168.6.8:37584 -d DidatourLogNew -c HBO.CreditAmountUseLog -q {enterpriseId:"510241acbfdf8f81dfe54f69"} -u ??? -p ???--csv -f createTime,orderId,payAmount,payType,isMPD,source -o testOut.dat
+
+
+
+
+var arr = db.HBO.CreditAmountUseLog.find({"enterpriseId":"510241acbfdf8f81dfe54f69","isMPD":{"$ne":true}}).toArray();
+
+function sumList(liss,valKey,groupBy){
+	var ret = {}; 
+	var min=null;
+	var max=null;
+	for(var i =0;i<liss.length;i++){
+		var o = liss[i];
+		if(o){
+			var gByVal = o[groupBy];
+			//print('gBy:'+gByVal+' =>'+o[valKey]);
+			if(!ret[gByVal]){
+				ret[gByVal] = {count:0,sum:0};
+			}
+			ret[gByVal].sum+=o[valKey];
+			ret[gByVal].count++;
+			if(min == null){
+				min = o[valKey];
+				max = o[valKey];
+			} else {
+				if(o[valKey] < min){
+					min = o[valKey];
+				}
+				if(o[valKey] > max){
+					max = o[valKey];
+				}
+			}
+			
+		}
+		
+		ret.min=min;
+		ret.max=max;
+	}
+	return ret;
+}
+
+var rs = sumList(arr,'payAmount','payType');
+rs;
+print('cost:'+(rs["1"].sum-rs["2"].sum))
+

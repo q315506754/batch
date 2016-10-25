@@ -1,0 +1,60 @@
+var mobile="13918595010";
+var ONEDAYTIME = 24*60*60*1000;
+var OFFSETTIME = 4*ONEDAYTIME;
+var NOWTIME = new Date().getTime();
+var orderSubscribes = new Array();
+function searchMember(mobile) {
+	return db.Member.findOne({"mobile":mobile});
+}
+function searchMemberById(id) {
+	return db.Member.findOne({"_id":ObjectId(id)});
+}
+function searchHHEMember(memberId) {
+	return db.HHE.Member.findOne({"memberId":memberId});
+}
+function searchHHEMemberById(id) {
+	return db.HHE.Member.findOne({"_id":ObjectId(id)});
+}
+function searchRecHHEMembers(hhememberId) {
+	return db.HHE.Member.find({"recMemberId":hhememberId}).toArray();
+}
+function searchMyOrders(hhememberId) {
+	var query = {};
+	query["status"] = "CNF";
+	query["subscriber"] = hhememberId;
+	var view = {orderId:1,subOrderId:1,status:1,createTime:1,totalPrice:1,quantity:1,subscriber:1,startDate:1,endDate:1};
+	var orders = db.Order.find(query,view).sort({"startDate":1}).toArray();
+	return orders;
+}
+function searchMyOrdersInSubs(hhememberIds) {
+	var query = {};
+	query["status"] = "CNF";
+	query["subscriber"] = {"$in" : hhememberIds};
+	var view = {orderId:1,subOrderId:1,status:1,createTime:1,totalPrice:1,quantity:1,subscriber:1,startDate:1,endDate:1};
+	var orders = db.Order.find(query,view).sort({"startDate":1}).toArray();
+	return orders;
+}
+//查询自己和所有下线
+var member = searchMember(mobile);
+print('该账号Member:');
+printjson(member);
+var memberId = member._id + "";
+var HHEmember = searchHHEMember(memberId);
+print('该账号HHEMember:');
+printjson(HHEmember);
+var HHEmemberId = HHEmember._id + "";
+var downHHEMembers = searchRecHHEMembers(HHEmemberId);
+for(var i=0;i<downHHEMembers.length;i++) {
+	orderSubscribes.push(downHHEMembers[i]._id);
+}
+print('该账号下线数:'+orderSubscribes.length);
+
+var myorders = searchMyOrders(HHEmember._id);
+print('该账号可返佣订单:');
+//printjsononeline(myorders);
+print('共计:'+myorders.length);
+
+var suborders = searchMyOrdersInSubs(orderSubscribes);
+print('该账号下线可返佣订单:');
+//printjsononeline(suborders);
+print('共计:'+suborders.length);

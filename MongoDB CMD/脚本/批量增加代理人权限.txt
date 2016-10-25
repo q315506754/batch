@@ -1,0 +1,114 @@
+//var agent_login_right_resource_key="INVITE_isAllow";
+var agent_projectName="企业版代理人平台";
+var roleName="INVITE_isAllow";
+
+var batAddRights = function(){
+	var projectId = getProject(agent_projectName);
+	//var loginResouce = getResource(agent_login_right_resource_key,projectId._id);
+	//print("loginResouce:"+JSON.stringify(loginResouce));
+	//var loginRoles = getRoleContainsResource(loginResouce._id,projectId._id);
+	//print("loginRoles:"+JSON.stringify(loginRoles));
+	
+	var loginRole = getRole(roleName,projectId._id);
+	//print("loginRole:"+JSON.stringify(loginRole));
+	
+	var allHHEMemberIds = getAllMemberWhichExistHHEMember();
+	var members = getMembersInIds(allHHEMemberIds);
+	//print("members:"+JSON.stringify(members));
+	
+	members.forEach(function(memberOne){
+		//print("memberOne:"+JSON.stringify(memberOne));
+		print('---------------------------------');
+		printMemInfo(memberOne);
+		var hisHHEMember = getHHEMember(memberOne);
+		//print("hisHHEMember:"+JSON.stringify(hisHHEMember));
+		if(isHHEMemberASubAccount(hisHHEMember)){
+			print("此账号是子账号,不用管权限");
+		}else{
+			var memberId = memberOne._id;
+			var rcMap = getHHEResourcesMap(memberId);
+			if(rcMap != undefined) {
+				//没有该权限才加进去
+				var eachRole = rcMap.roles;
+				//print("rcMap:"+JSON.stringify(rcMap));
+				//if(eachRole.lastIndexOf(loginRole._id) == -1) {
+				if(arrayContains(eachRole,loginRole._id)) {
+					print("this role not exist in roles");
+					eachRole.push(loginRole._id);
+					rcMap.roles = eachRole;
+					print("rcMap:"+JSON.stringify(rcMap.roles));
+				} else {
+					print("exists this role");
+				}
+				db.HHE.ResourcesMap.save(rcMap);
+				//print("eachRole:"+JSON.stringify(eachRole));
+			} else {
+				//直接加进去
+				print("rcMap:undefined 新建");
+				rcMap = {};
+				rcMap.ownerId = memberId;
+				var eachRole = new Array();
+				eachRole.push(loginRole._id);
+				rcMap.roles = eachRole;
+				print("new rcMap:"+JSON.stringify(rcMap));
+				db.HHE.ResourcesMap.save(rcMap);
+			}
+		}
+	});
+	
+	//print('');
+	print('func over!');
+}
+function getProject(projectName) {
+	return db.HHE.Project.findOne({"projectName":projectName});
+}
+function getResource(resourceName,projectId) {
+	return db.HHE.Resource.findOne({"key":resourceName,"projectId":projectId});
+}
+function getRoleContainsResource(resourceId,projectId) {
+	return db.HHE.Role.findOne({"projectId":projectId,"resources":{"$all":[resourceId]}});
+}
+function getRole(roleName,projectId) {
+	return db.HHE.Role.findOne({"projectId":projectId,"name":roleName});
+}
+function printMemInfo(member) {
+	print("member:"+member.mobile+' ' + member.name);
+}
+function getAllMemberWhichExistHHEMember() {
+	var hheIds = new Array();
+	var hheCur = db.HHE.Member.find();
+	hheCur.forEach(function(hheOne){
+		if(hheOne.memberId != undefined && hheOne.memberId.length == 24){
+			hheIds.push(ObjectId(hheOne.memberId));
+		}
+	});
+	//print("hheIds:"+JSON.stringify(hheIds));
+	return hheIds;
+}
+function getMembersInIds(memberIds) {
+	return db.Member.find({"_id":{"$in":memberIds}});
+}
+function getHHEResourcesMap(memberId) {
+	return db.HHE.ResourcesMap.findOne({"ownerId":memberId});
+}
+function getHHEMember(member) {
+	return db.HHE.Member.findOne({"memberId":""+member._id});
+}
+function isHHEMemberASubAccount(hheMember) {
+	var ret = false;
+	if(hheMember.recMemberId != undefined && hheMember.recMemberId.length == 24) {
+		ret = true;
+	}
+	return ret;
+}
+function arrayContains(arr,id) {
+	for(var i=0;i<arr.lenth;i++) {
+		if(arr[i] === id) {
+			return true;
+		}
+	}
+	return false;
+}
+batAddRights();
+
+

@@ -1,0 +1,33 @@
+#$language = "JScript"
+#$interface = "1.0"
+
+function main() { 
+  //Display SecureCRT's version
+	 /*var resid = crt.Dialog.Prompt("请输入设备ID: ", "DeviceID", "", 0);
+    if(resid == "" || undefined == resid) {
+        crt.Dialog.MessageBox("请输入正确设备ID！");
+        return ;
+    }*/
+	//crt.Screen.send("Didatour46\r\n");
+	
+	var t = 10;
+    crt.Screen.send("sudo /home/user/apache-tomcat-7.0.42/bin/shutdown.sh\r\n");
+	crt.Screen.send("echo waiting "+t+" seconds \r\n");
+	crt.Screen.WaitForString("NONE_user@ubuntu",t);
+	
+	t = 5;
+    crt.Screen.send("sudo /home/user/apache-tomcat-7.0.42/bin/shutdown.sh\r\n");
+	crt.Screen.send("echo waiting "+t+" seconds \r\n");
+	crt.Screen.WaitForString("NONE_user@ubuntu",t);
+	
+	t = 3;
+	crt.Screen.send("sudo rm -rf /home/user/apache-tomcat-7.0.42/webapps/DubboService\r\n");
+	//crt.Screen.WaitForString("user@ubuntu")
+	crt.Screen.send("echo waiting "+t+" seconds \r\n");
+	crt.Screen.WaitForString("NONE_user@ubuntu",t);
+	
+	crt.Screen.send("sudo /home/user/apache-tomcat-7.0.42/bin/startup.sh\r\n");
+	crt.Screen.WaitForString("user@ubuntu");
+	
+	crt.Screen.send("tail -f /home/user/apache-tomcat-7.0.42/logs/catalina.out\r\n");
+}

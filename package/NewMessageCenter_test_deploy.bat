@@ -1,0 +1,1 @@
+scp NewMessageCenter.war zzy@172.16.0.2:/opt/tomcat/webapps/NewMessageCenter.war

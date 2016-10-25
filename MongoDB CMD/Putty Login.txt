@@ -1,0 +1,183 @@
+
+
+//登陆.2测试库
+172.16.0.2
+
+zzy
+didatour
+
+mongo --port 30000
+
+use DidatourNew
+
+db.auth('client','12345')
+
+use DidatourLogNew
+
+db.auth('client','12345')
+
+use DidatourNew
+
+
+//登陆正式日志库，需先连接到.2根目录
+mongo 192.168.6.8:37584
+use admin
+db.auth("Readuser","Reader1")
+use DidatourLogNew
+
+//登陆正式库，需先连接到.2根目录
+use DidatourNew
+db.auth("client","b%1j9u9v")
+
+DidatourLogNew  db.auth("client","Newlog1")
+
+
+
+//test for find
+db.Order.findOne();
+db.Order.find({"$or":[{"name":"xxx"},{"name":"jjj"}]})
+db.Order.find({"okNum":{"$exists":true}}).toArray()
+db.HHE.AgentWithdrawRec.findOne();
+var one = db.HHE.AgentWithdrawRec.findOne({"hheMemberId" : ObjectId("538455bce4b0b482a5eccbae")})
+one.withdrawnTotalPrize+=1;
+db.HHE.AgentWithdrawRec.save(one);
+
+db.Price.count()
+
+db.Price.mapReduce(function(){
+	var  data = {sum:1,ids:[]};
+	var key;
+	if(this.price == undefined || this.price == null ){
+		key = "null";
+		data.ids.push(this._id+"");
+	}else{
+		key = "not null";
+	}
+	emit(key,data);
+},function(key,vals){
+	//if(key=="null"){
+	var ret = {sum:0,ids:[]};
+	for(var i in vals){
+		var valOne = vals[i];
+		ret.sum+=valOne.sum;
+		if(key=="null"){
+			for(var j in valOne.ids){
+				ret.ids.push(valOne.ids[j]);
+			}
+		}
+	}
+	return ret;
+	
+},{
+	out:"Price.md",
+});
+
+db.Price.mapReduce(function(){
+	if(this.price == undefined || this.price == null ){
+		emit("null",1);
+	}else{
+		emit("not null",1);
+	}
+},function(key,vals){
+	var sum = 0;
+	for(var i in vals){
+		var valOne = vals[i];
+		sum+=valOne;
+	}
+	return sum;
+},{
+	out:"Price.md",
+});
+db.Price.md.find();
+var x = db.Price.findOne();
+
+db.Price.find({"price" : {$exists:false}}).explain();
+
+db.Price.find({}).explain();
+
+
+db.testOrder.remove();
+db.testOrder.save({cust_id:"A123",ammount:500,status:"A"})
+db.testOrder.save({cust_id:"A123",ammount:400,status:"A"})
+db.testOrder.save({cust_id:"A123",ammount:600,status:"A"})
+db.testOrder.save({cust_id:"A123",ammount:700,status:"A"})
+db.testOrder.save({cust_id:"B212",ammount:700,status:"A"})
+db.testOrder.save({cust_id:"B212",ammount:1200,status:"A"})
+db.testOrder.find();
+
+db.testOrder.mapReduce(function(){
+	emit(this.cust_id,{amount:this.ammount,logs:[]});
+},function(cust_id,arrs){
+	var ret = {amount:0,logs:[]};
+	ret.logs.push(arrs);
+	return ret;
+},{
+	out:"testOrder.md"
+});
+
+db.testOrder.md.find().pretty();
+
+
+db.testOrder.mapReduce(function(){
+	emit(this.cust_id,this.ammount);
+},function(cust_id,ammounts){
+	return Array.sum(ammounts);
+},{
+	limit:2,
+	out:"testOrder.md"
+});
+
+
+db.testOrder.mapReduce(function(){
+	emit(this.cust_id,{amount:this.ammount});
+},function(cust_id,amounts){
+	var ret = {amountX:0};
+	for(var i in amounts){
+		ret.amountX+=amounts[i].amount;
+	}
+	return ret;
+},{
+	out:"testOrder.md"
+});
+
+db.testOrder.md.find().pretty();
+
+
+db.Order.mapReduce(function(){
+	emit(this.orderId,{totalPrice:this.totalPrice,subOrderId:this.subOrderId,totalPrices:[this.totalPrice]});
+},function(orderId,amounts){
+	var ret = {amountX:0,subOrderIds:[],totalPrices:[]};
+	for(var i in amounts){
+		ret.amountX+=amounts[i].totalPrice;
+		ret.subOrderIds.push(amounts[i].subOrderId);
+		for(var j in amounts[i].totalPrices){
+			ret.totalPrices.push(amounts[i].totalPrices[j]);
+		}
+	}
+	return ret;
+},{
+	out:"testOrder.md"
+});
+db.testOrder.md.find().pretty();
+db.testOrder.md.find({"value.amountX":{$exists:true}}).pretty();
+db.testOrder.md.find({"value.amountX":/NaN/}).pretty();
+db.testOrder.md.find({"value.amountX":{$exists:true}}).sort({"value.amountX":1}).pretty();
+db.testOrder.md.find({_id:"11011292"}).pretty();
+
+db.Order.mapReduce(function(){
+	emit(this.orderId,{totalPrice:this.totalPrice,subOrderIds:[this.subOrderId],totalPrices:[this.totalPrice]});
+},function(orderId,amounts){
+	var ret = {totalPrice:0,subOrderIds:[],totalPrices:[]};
+	for(var i in amounts){
+		ret.totalPrice+=amounts[i].totalPrice;
+		for(var j in amounts[i].subOrderIds){
+			ret.subOrderIds.push(amounts[i].subOrderIds[j]);
+		}
+		for(var j in amounts[i].totalPrices){
+			ret.totalPrices.push(amounts[i].totalPrices[j]);
+		}
+	}
+	return ret;
+},{
+	out:"testOrder.md"
+});

@@ -1,0 +1,33 @@
+﻿var mobile="13918595010";
+var agentMobile="13912345678";
+function searchMember(mobile) {
+	return db.Member.findOne({"mobile":mobile});
+}
+function searchMemberById(id) {
+	return db.Member.findOne({"_id":ObjectId(id)});
+}
+function searchHHEMember(memberId) {
+	return db.HHE.Member.findOne({"memberId":memberId});
+}
+function searchHHEMemberById(id) {
+	return db.HHE.Member.findOne({"_id":ObjectId(id)});
+}
+function searchRecHHEMembers(hhememberId) {
+	return db.HHE.Member.find({"recMemberId":hhememberId}).toArray();
+}
+var mem = searchMember(mobile);
+var memId = mem._id + "";
+var hhe_mem =searchHHEMember(memId)
+var age_mem = searchMember(agentMobile);
+var age_memId = age_mem._id+ "";
+var hhe_age_mem =searchHHEMember(age_memId)
+
+hhe_mem.recMemberId = hhe_age_mem._id + ""
+db.HHE.Member.save(hhe_mem)
+
+hhe_mem;
+hhe_age_mem;
+
+
+
+

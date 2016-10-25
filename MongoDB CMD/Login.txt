@@ -1,0 +1,59 @@
+
+
+//登陆.2测试库
+172.16.0.2
+
+zzy
+didatour
+
+mongo --port 30000
+
+use DidatourNew
+
+db.auth('client','12345')
+
+use DidatourLogNew
+
+db.auth('client','12345')
+
+use DidatourNew
+
+
+//登陆正式日志库，需先连接到.2根目录
+mongo 192.168.6.8:37584
+use admin
+db.auth("Readuser","Reader1")
+use DidatourLogNew
+
+//登陆正式库，需先连接到.2根目录
+use DidatourNew
+db.auth("client","b%1j9u9v")
+
+
+
+//test for find
+db.Order.findOne();
+db.Order.find({"$or":[{"name":"xxx"},{"name":"jjj"}]})
+db.Order.find({"okNum":{"$exists":true}}).toArray()
+
+db.Order.update({"orderId":"11124985"},{"$set":{"status":"PAD"}},true,true)
+db.Order.findOne({"orderId":"11124985"});
+  
+
+
+db.HBO.entInfToken.findOne({entDocId:"5594a77fe4b06268883eed44"})
+db.HBO.entInfToken.find({pushUrl:{$exists:true},isPush:true}).toArray()
+
+mongoexport --host 192.168.6.8:37584 -d DidatourLogNew -c HBO.CreditAmountUseLog -q {enterpriseId:"510241acbfdf8f81dfe54f69"} -u ??? -p ???--csv -f createTime,orderId,payAmount,payType,isMPD,source -o testOut.dat
+
+mongoexport --host 192.168.6.8:37584 -d DidatourLogNew -c HBO.CreditAmountUseLog -q {enterpriseId:"510241acbfdf8f81dfe54f69"} -u client -p b%1j9u9v --csv -f createTime,orderId,payAmount,payType,isMPD,source -o testOut.dat
+mongoexport --host 192.168.6.8:37584 -d DidatourLogNew -c HBO.CreditAmountUseLog -q {enterpriseId:"510241acbfdf8f81dfe54f69"} -u Readuser -p Reader1 --csv -f createTime,orderId,payAmount,payType,isMPD,source -o testOut.dat
+mongoexport --host 192.168.6.8:37584 -d DidatourLogNew -c SignHotelInfo -q {} -u client -p Newlog1 --csv  -f name -o testOutSignHotelInfo.dat
+
+mongoexport --host 192.168.6.8:37584 -d DidatourNew -c SignHotelInfo -q "{'payment':'530423d4e4b07d58cdfa1eaf'}" -u client -p b%1j9u9v --csv  -f name -o testOutSignHotelInfo.dat
+
+db.SignHotelInfo.distinct("type");
+db.SignHotelInfo.findOne();
+db.SignHotelInfo.
+
+BookingPayment

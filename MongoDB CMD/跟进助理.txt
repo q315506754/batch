@@ -1,0 +1,21 @@
+db.Order.find({startDate:{$gte:1441036800000},"product.followAssistant":{$exists:false}}).forEach(function(order){
+	var hotel = db.SignHotelInfo.findOne({name:order.product.propName.trim()});
+	if(hotel){
+		order.product.followAssistant = hotel.followAssistant;
+		db.Order.save(order);
+	}else{
+		var prop = db.Property.findOne({_id:order.product.propId});
+		if(prop){
+			hotel = db.SignHotelInfo.findOne({name:prop.name.trim()});
+			if(hotel){
+				order.product.followAssistant = hotel.followAssistant;
+				db.Order.save(order);
+			}else{
+				print(order.orderId + " ：" + order.product.propName + " not found.");
+			}
+		}
+	}
+});
+//将9.1号之后入住的订单加上签约部门和签约人
+
+db.Order.find({"product.followAssistant":{$exists:true}}).toArray()

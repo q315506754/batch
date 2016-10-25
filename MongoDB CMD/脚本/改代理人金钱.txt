@@ -1,0 +1,19 @@
+var mobile="13671738746";
+var money= 9999;
+
+	use DidatourNew;
+	var memberOne = db.Member.findOne({"mobile":mobile});
+	var hheMemberId = ""+memberOne._id;
+		var hheMemberOne = db.HHE.Member.findOne({"memberId":hheMemberId})
+		var hheMemberObjectId = hheMemberOne._id;
+			use DidatourLogNew;
+			//db.auth('client','12345');
+			var rec = db.HHE.AgentWithdrawRec.findOne({"hheMemberId":hheMemberObjectId});
+			rec.unwithdrawnPriceForOldData = money;
+			db.HHE.AgentWithdrawRec.save(rec);
+			print("success!");
+	print("edit over~~~~~~");
+	print("end~~~~~~"+JSON.stringify(rec));
+
+
+

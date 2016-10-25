@@ -1,0 +1,98 @@
+﻿var projectName="权限管理工程";
+var requiredResourceKey="Rights_login";
+var requiredResourceUrl="http://bkg.bingdian.com/RightsManager/";
+var requiredRoleName="权限管理-登陆跳转角色";
+var adminResourceKey="Rights_SuperAdmin";
+var adminRoleName="权限管理-管理员角色";
+var username="z@didatour2.com";
+var password="e10adc3949ba59abbe56e057f20f883e";
+var adminId;
+var common = function(){
+	 var project = db.Project.findOne({"projectName":projectName});
+	if(null===project||undefined===project){
+		project = {
+			"projectName":projectName           
+		};
+		db.Project.save(project);
+		
+	}
+   
+    
+	var requiredResource = db.Resource.findOne({"key":requiredResourceKey}); 
+	if(null===requiredResource||undefined===requiredResource){
+		requiredResource = {
+			"name":"权限管理-登陆跳转",
+			"isEnable":true,
+			"description":requiredResourceUrl,
+			"type":"Login",
+			"projectId":project._id,
+			"key":requiredResourceKey
+		};
+		db.Resource.save(requiredResource);
+	}
+	
+	var requiredRole = db.Role.findOne({"name":requiredRoleName}); 
+	if(null===requiredRole||undefined===requiredRole){
+		requiredRole = {
+			"name":requiredRoleName,
+			"isEnable":true,
+			"description":requiredRoleName,
+			"projectId":project._id,
+			"resources":[requiredResource._id]
+		};
+		db.Role.save(requiredRole);
+	}
+	
+	var adminResource = db.Resource.findOne({"key":adminResourceKey}); 
+	if(null===adminResource||undefined===adminResource){
+		adminResource = {
+			"name":"权限管理-管理员",
+			"isEnable":true,
+			"description":"权限管理-管理员",
+			"type":"Common",
+			"projectId":project._id,
+			"key":adminResourceKey
+		};
+		db.Resource.save(adminResource);
+	}
+	
+	var adminRole = db.Role.findOne({"name":adminRoleName}); 
+	if(null===adminRole||undefined===adminRole){
+		adminRole = {
+			"name":adminRoleName,
+			"isEnable":true,
+			"description":adminRoleName,
+			"projectId":project._id,
+			"resources":[adminResource._id]
+		};
+		db.Role.save(adminRole);
+	}
+	
+	var admin = db.Admin.findOne({"username":username}); 
+	if(null===admin||undefined===admin){
+		admin = {
+			"username":username,
+			"isEnable":true,
+			"password":password
+		};
+		db.Admin.save(admin);
+	}
+	adminId = admin._id;
+	
+	var resourceMap = db.ResourcesMap.findOne({"ownerId":admin._id}); 
+	if(null===resourceMap||undefined===resourceMap){
+		resourceMap={
+			"ownerId" : admin._id,
+			"roles" : [adminRole._id,requiredRole._id]
+		}
+	}
+	db.ResourcesMap.save(resourceMap);
+}
+common();
+db.Project.findOne({"projectName":projectName});
+db.Resource.findOne({"key":requiredResourceKey}); 
+db.Role.findOne({"name":requiredRoleName}); 
+db.Resource.findOne({"key":adminResourceKey});
+db.Role.findOne({"name":adminRoleName}); 
+db.Admin.findOne({"username":username}); 
+db.ResourcesMap.findOne({"ownerId":adminId});

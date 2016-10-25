@@ -1,0 +1,7 @@
+#$language = "JScript"
+#$interface = "1.0"
+
+function main() { 
+
+	crt.Screen.send("tail -f /home/user/apache-tomcat-7.0.42/logs/catalina.out\r\n");
+}

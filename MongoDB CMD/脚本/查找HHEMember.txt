@@ -1,0 +1,6 @@
+var mobile="13587176447";
+var memberOne = db.Member.findOne({"mobile":mobile});
+var hheMemberId = ""+memberOne._id;
+var hheMemberOne = db.HHE.Member.findOne({"memberId":hheMemberId});
+printjson(memberOne);
+printjson(hheMemberOne);

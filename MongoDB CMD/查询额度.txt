@@ -1,0 +1,76 @@
+﻿
+172.16.0.2
+zzy
+didatour
+
+
+mongo 192.168.6.8:37584
+use admin
+db.auth("Readuser","Reader1")
+use DidatourLogNew
+
+use DidatourNew
+
+
+host=192.168.6.9
+port=37584
+database=DidatourNew
+mongouser=client
+mongopasswd=b%1j9u9v
+
+
+db.HBO.CreditAmountUseLog.findOne();
+db.HBO.CreditAmountUseLog.findOne({orderId:""});
+
+db.HBO.CreditAmountUseLog.find({enterpriseId:"529ff355e4b0adee9a2fee2a"})
+
+db.HBO.CreditAmountUseLog.count({enterpriseId:"529ff355e4b0adee9a2fee2a"})
+
+db.HBO.CreditAmountUseLog.find({enterpriseId:"529ff355e4b0adee9a2fee2a"},{payAmount:1,payType:1,orderId:1})
+
+function sumList(liss){
+	var sum = 0;
+	
+	for(var i =0;i<liss.length;i++){
+		var o = liss[i];
+		if(o){
+		//print(JSON.stringify(o))
+		sum=sum+o["payAmount"];}else{
+			print("undefined:!!!!!!!!!!!!!"+JSON.stringify(o))
+		}
+	}
+	return sum;
+}
+
+
+var list1=db.HBO.CreditAmountUseLog.find({enterpriseId:"529ff355e4b0adee9a2fee2a",payType:1,isMPD:true},{payAmount:1,payType:1,orderId:1}).toArray()
+
+
+var sumZF = sumList(list1)
+
+var list2=db.HBO.CreditAmountUseLog.find({enterpriseId:"529ff355e4b0adee9a2fee2a",payType:2,isMPD:true},{payAmount:1,payType:1,orderId:1}).toArray()
+var sumTK = sumList(list2)
+
+var list3=db.HBO.CreditAmountUseLog.find({enterpriseId:"529ff355e4b0adee9a2fee2a",payType:1,isMPD:{$ne:true}},{payAmount:1,payType:1,orderId:1}).toArray()
+var sumZF_f = sumList(list3)
+var list4=db.HBO.CreditAmountUseLog.find({enterpriseId:"529ff355e4b0adee9a2fee2a",payType:2,isMPD:{$ne:true}},{payAmount:1,payType:1,orderId:1}).toArray()
+var sumTK_f= sumList(list4)
+
+sumZF
+sumTK
+sumZF_f 
+sumTK_f
+
+var list_notJS=db.HBO.CreditAmountUseLog.find({enterpriseId:"529ff355e4b0adee9a2fee2a",isMPD:{$ne:true}},{payAmount:1,payType:1,orderId:1,isMPD:1}).toArray()
+list_notJS
+list_notJS.length
+
+var list_YJS=db.HBO.CreditAmountUseLog.find({enterpriseId:"529ff355e4b0adee9a2fee2a",isMPD:true},{payAmount:1,payType:1,orderId:1,isMPD:1}).toArray()
+list_YJS
+list_YJS.length
+
+
+payType=1  isMPD=true的全部payAmount加起来为16942
+payType=2  isMPD=true的全部payAmount加起来为1200
+payType=1  isMPD=false的全部payAmount加起来为13800
+payType=2  isMPD=false的全部payAmount加起来为8219

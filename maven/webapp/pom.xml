@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>com.bingdian.NewPushProject</groupId>
+        <artifactId>NewPushProject-parent</artifactId>
+        <version>${com.provider-version}</version>
+    </parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.bingdian.service</groupId>
+	<artifactId>NewPushMonitor</artifactId>
+	<version>${com.provider-version}</version>
+	<!--<version>1.0-SNAPSHOT</version>-->
+	<name>NewPushMonitor</name>
+
+	<dependencies>
+        <dependency>
+            <groupId>com.bingdian.NewPushProject</groupId>
+            <artifactId>NewPushCommon</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>quartz</groupId>
+            <artifactId>quartz</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+	</dependencies>
+
+
+
+	<build>
+		<finalName>NewPushMonitor</finalName>
+
+		<plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <!--<webXml>web/WEB-INF/web.xml</webXml>-->
+                    <!--<webappDirectory >web</webappDirectory>-->
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp</directory>
+                            <!--<filtering>true</filtering>-->
+                        </resource>
+                    </webResources>
+
+                </configuration>
+            </plugin>
+
+
+
+		</plugins>
+	</build>
+</project>

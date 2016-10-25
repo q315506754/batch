@@ -1,0 +1,45 @@
+﻿var mobile="15001886650";
+function searchMember(mobile) {
+	return db.Member.findOne({"mobile":mobile});
+}
+function searchMemberById(id) {
+	return db.Member.findOne({"_id":ObjectId(id)});
+}
+function searchHHEMember(memberId) {
+	return db.HHE.Member.findOne({"memberId":memberId});
+}
+function searchHHEMemberById(id) {
+	return db.HHE.Member.findOne({"_id":ObjectId(id)});
+}
+function searchRecHHEMembers(hhememberId) {
+	return db.HHE.Member.find({"recMemberId":hhememberId}).toArray();
+}
+var mem = searchMember(mobile);
+var memId = mem._id;
+var memMap = db.HHE.ResourcesMap.findOne({"ownerId":memId });
+var memMapArr = db.HHE.ResourcesMap.find({"ownerId":memId }).toArray();
+function searchRole(roleId) {
+	return db.HHE.Role.findOne({"_id":roleId});
+}
+if(memMapArr && memMapArr.length > 0) {
+	for(var j in memMapArr ) {
+		var myRoles = memMapArr[j].roles;
+		var myRolesSearch = new Array();
+		for(var i in myRoles) {
+			var eachRole = searchRole(myRoles[i]);
+			if(eachRole) {
+				myRolesSearch.push(eachRole.name);
+			} else {
+				myRolesSearch.push(myRoles[i] + "找不到HHE.Role数据");
+			}
+			
+		}
+		memMapArr[j]._roleNames = myRolesSearch;
+	}
+}
+mem;
+memMapArr;
+
+
+
+

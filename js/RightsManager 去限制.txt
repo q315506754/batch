@@ -1,0 +1,57 @@
+13761156786
+product:
+983092
+dev:
+123456
+
+
+
+正式 http://192.168.6.11:8080/RightsManager/
+z@didatour.com
+Zhiyouwozhidao
+
+本地 http://localhost:8080/LoginCenter/?requestUrl=http://localhost:8080/InfManager/
+zhaoxiang@bingdian.com
+123456
+
+localhost:8081/HHERightsManager/auth/setCk.go?k=O0nJBIHjKyVAWA7%2FJ3idWI0VsCRW3EMpOLBjnRYwMpBGrfAhI1Kf%2FWGwZBCzRNGBT0GRaVXD0PmGTi1sKJhXCF2hHBN3aQ5ZlMEO1WiKRHmpD3pP6IPlfgP7SBPCtczvOFx2XBLTWVRoP9SK4rO8z9O7rawfzJ5u54lw602YgqkMPzWl3zNGGre%2FErnESEdgsXWVQmqtX6VjfgzOenG36GoQnmwjN6q0fFcTAxz%2BcLqfWIq2XrSQDfnuyNuy9Cn%2FNlQL%2B7tmChVrJg7HSv5J0abDuSy54TihFK4mnv90pQ4KF3ed5yAlrk5C8CSWQNpg7FSnWLjjb%2FTvnG93WZHNXynmH60n1RDSzJN%2Fgees2uKaGLKrwrnwVkSMnFwV9unABlqKakT50HJ2T3tmtWK3uK2s4REdJmVnVr%2FPQVtXiYt8EvrwFt5diSIIuMgayJ25Z9XKes3fWbRDR37WMcnHMYR%2BMPsT8Vw3E%2F61HV4OzRnBvAXINlkFvg%3D%3D&redirectUrl=http://localhost:8081/HHERightsManager/enterprise/toEnterprise.go
+
+
+testing@bingdian.com  Aa334455
+
+13918595010
+属于分销商 agentTest
+token 529c550940a748377c3b0ef3
+密码 123456
+
+$("#searchRes").unbind();
+$("#searchRes").click(function(){
+	
+	  var id = $("#roleId").val();
+	  var projectName = $("#projectName").val();
+	  var data = {};
+		data.name = $("#nameRes").val();
+		data.projectName = projectName;
+		data.roleId = id;
+		$.ajax({
+			type : "post",
+			url : "searchrelateRes.go",
+			data:data,
+			async : false,
+			cache : false,
+			success : function(data) {
+				$("#resContent").html("");
+				if(data.length>0){
+					var text = "";
+					for ( var i = 0; i < data.length; i++) {
+						text = text +"<tr><td><input type='checkbox' name='checkbox' value='"+data[i].name+"'>&nbsp;&nbsp;"+data[i].name+"</td>";
+						text = text +"<td>"+data[i].key+"</td></tr>";
+					}
+					$("#resContent").html(text);
+					$(".nomessageRes").css("display","none");
+				}else{
+					$(".nomessageRes").css("display","block");
+				}
+			}
+		}); 
+  });

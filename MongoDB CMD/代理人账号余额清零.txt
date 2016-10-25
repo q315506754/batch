@@ -1,0 +1,25 @@
+//代理人账号余额清零
+function searchMember(mobile) {
+	return db.Member.findOne({"mobile":mobile});
+}
+function searchHHEMember(memberId) {
+	return db.HHE.Member.findOne({"memberId":memberId});
+}
+function searchHHEMemberById(id) {
+	return db.HHE.Member.findOne({"_id":ObjectId(id)});
+}
+use DidatourNew
+var mobile="13042153415";
+var member = searchMember(mobile);
+var memberId = member._id + "";
+var HHEmember = searchHHEMember(memberId);
+print('姓名:'+member.name);
+print('密码:'+HHEmember.password);
+use DidatourLogNew
+var agentWithdrawRec = db.HHE.AgentWithdrawRec.findOne({"hheMemberId":HHEmember._id});
+print('代理人最后一次提取时间:'+agentWithdrawRec.lastWithdrewTime);
+print('历史总提现金额:'+agentWithdrawRec.withdrawnTotalPrize);
+agentWithdrawRec.withdrawnTotalPrize=2208;
+agentWithdrawRec.lastWithdrewTime=NumberLong(new Date().getTime());
+printjson(agentWithdrawRec);
+db.HHE.AgentWithdrawRec.save(agentWithdrawRec);

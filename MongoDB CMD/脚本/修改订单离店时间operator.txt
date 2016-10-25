@@ -1,0 +1,25 @@
+var orderId="11053077";
+var dateTime="2014/06/27";
+var operator="ios";
+var parse = Date.parse(dateTime);
+print("parsed:"+parse);
+
+print("修改前:");
+var orders = db.Order.find({"orderId":orderId}).toArray();
+print("订单数:"+orders.length);
+for(var i=0;i<orders.length;i++){
+	print("orderId:"+orders[i].orderId+" subOrderId:"+orders[i].subOrderId);
+	print("  endDate:"+orders[i].endDate);
+	print("  operator:"+orders[i].operator);
+	orders[i].endDate = NumberLong(parse);
+	orders[i].operator = operator;
+	db.Order.save(orders[i]);
+}
+
+print("修改后:");
+orders = db.Order.find({"orderId":orderId}).toArray();
+for(var i=0;i<orders.length;i++){
+	print("orderId:"+orders[i].orderId+" subOrderId:"+orders[i].subOrderId);
+	print("  endDate:"+orders[i].endDate);
+	print("  operator:"+orders[i].operator)
+}

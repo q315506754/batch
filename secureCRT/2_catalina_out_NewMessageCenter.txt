@@ -1,0 +1,13 @@
+#$language = "JScript"
+#$interface = "1.0"
+
+function main() { 
+  //Display SecureCRT's version
+	 /*var resid = crt.Dialog.Prompt("请输入设备ID: ", "DeviceID", "", 0);
+    if(resid == "" || undefined == resid) {
+        crt.Dialog.MessageBox("请输入正确设备ID！");
+        return ;
+    }*/
+	crt.Screen.send("tail -f -n 5000 /opt/tomcat/logs/catalina.out\r\n");
+  
+}

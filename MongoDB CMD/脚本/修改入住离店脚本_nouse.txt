@@ -1,0 +1,26 @@
+var orderId="11039170";
+var status="CNF";
+var dates = [{"startDate":"1395331200000","endDate":"1395417600000"},{"startDate":"1395417600000","endDate":"1395504000000"}];
+var func = function(){
+	var orders = db.Order.find({"orderId":orderId}).sort({"startDate":1}).toArray();
+	for(var i=0;i<orders.length;i++){
+		print("m:"+orders[i].orderId + "->s:" +orders[i].subOrderId + " status:" +orders[i].status +" sd:"+orders[i].startDate +" ed:"+orders[i].endDate);
+	}
+}
+func();
+var edit = function(){
+	var orders = db.Order.find({"orderId":orderId}).sort({"startDate":1});
+	print("editing");
+	var minlength = dates.length < orders.length()? dates.length:orders.length();
+	print("loop total:"+minlength);
+	for(var i=0;i<minlength;i++){
+		orders[i].startDate = NumberLong(dates[i].startDate);
+		orders[i].endDate = NumberLong(dates[i].endDate);
+		orders[i].status = status;
+		db.Order.save(orders[i]);
+	}
+	print("edit over~~~~~~");
+}
+edit();
+print("after edit");
+func();
