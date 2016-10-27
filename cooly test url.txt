@@ -1,0 +1,294 @@
+https://172.16.0.46:9091//coos//app//getInvitationCode.json?username=ceshi
+http://172.16.0.46:9091//coos//app//getInvitationCode.json?username=ceshi
+https://172.16.0.46:8443//coos//app//getInvitationCode.json?username=ceshi
+
+掌旅行的后台
+http://admin.handtours.com/
+http://119.254.209.52/login?returnUrl=%2f
+后台帐号：
+13917050524
+后台密码：
+t.asd123
+
+upyun, 掌行
+账号：handtours 
+密码：zhangxing
+webmaster/Zhangxing_321
+
+
+https://console.upyun.com/login/
+handtours 
+zhangxing
+
+手机 http://handtours.com/
+
+手机
+15001875047
+123456
+
+
+www.iamcooly.com
+keytool -genkeypair  -v -alias cooly -sigalg SHA256withRSA  -keyalg RSA -keysize 2048 -keystore .keystore
+
+keytool -export -alias cooly -storepass www.iamcooly.com -file cooly.cer -keystore .keystore
+
+
+13167158289/123456
+ 
+http://localhost:8081/NewResManager/auth/setCk.go?k=O0nJBIHjKyVNoCb%2FX5KJEIZA28obZ3H9yJoGeVB9QAqHbNBz6f39DWGwZBCzRNGBDbcClKI4MAhx4AQsgYUECXuNjGBpc4D5m%2FTN2owYDouewqwW9Naapni1deK4l0ZvLBSxIPRecitqw%2BvtM8ew0M9Nz2N74nlRphYrzUEA0Dnwdjp4t2IdmTxAeuPFzspy8HY6eLdiHZk8QHrjxc7Kcqm9SREZf3AbhndM5%2FaycsayOU%2BiBgPhwC2Q43vFIDT2WTkCejabkdW%2FmufGTnWfuDQTqaURS3%2FId0iJYndZMb%2BKNRn5b0AnXplzawhntb4CpLdvlbv%2FESxzMgZQPxW35GU%2F3ZUFevsMST9nZwfkKZmBjCsUSz4VE%2FadiSgD4JhzNfO9RXX2QWAa6oa6DVV1K92O8zWnF8n26UjzT935nU0Sz7gIUhgcHr7fm72%2FNuEBMweiBjinK6m%2FZi32cwm9iYS77jazh10CxB3l0oHNwPjxuo3iZ3uJCYaYxvnvF0e2ArP0blPYhGl4xVwSZyXCKTpDa7MzNRmOkGZ1LIxqiD5zWPZz4Pl%2FAZ%2BmbRYdNnrJeE5Hg1SBqqcx9%2Fg6SXiVpFYb6iBolwFGlMNQ8pQtWWqCAHorDKAcVTqknLlWXPjRnfgPmYbABNu2yKyzzvPlvg%3D%3D&redirectUrl=http://localhost:8081/NewResManager
+http://localhost:8081/newResManager/auth/setCk.go?k=O0nJBIHjKyVNoCb%2FX5KJEIZA28obZ3H9yJoGeVB9QAqHbNBz6f39DWGwZBCzRNGBDbcClKI4MAhx4AQsgYUECXuNjGBpc4D5m%2FTN2owYDouewqwW9Naapni1deK4l0ZvLBSxIPRecitqw%2BvtM8ew0M9Nz2N74nlRphYrzUEA0Dnwdjp4t2IdmTxAeuPFzspy8HY6eLdiHZk8QHrjxc7Kcqm9SREZf3AbhndM5%2FaycsayOU%2BiBgPhwC2Q43vFIDT2WTkCejabkdW%2FmufGTnWfuDQTqaURS3%2FId0iJYndZMb%2BKNRn5b0AnXplzawhntb4CpLdvlbv%2FESxzMgZQPxW35GU%2F3ZUFevsMST9nZwfkKZmBjCsUSz4VE%2FadiSgD4JhzNfO9RXX2QWAa6oa6DVV1K92O8zWnF8n26UjzT935nU0Sz7gIUhgcHr7fm72%2FNuEBMweiBjinK6m%2FZi32cwm9iYS77jazh10CxB3l0oHNwPjxuo3iZ3uJCYaYxvnvF0e2ArP0blPYhGl4xVwSZyXCKTpDa7MzNRmOkGZ1LIxqiD5zWPZz4Pl%2FAZ%2BmbRYdNnrJeE5Hg1SBqqcx9%2Fg6SXiVpFYb6iBolwFGlMNQ8pQtWWqCAHorDKAcVTqknLlWXPjRnfgPmYbABNu2yKyzzvPlvg%3D%3D&redirectUrl=http://localhost:8081/newResManager
+http://localhost:8081/PROLoginCenter/?requestUrl=http://localhost:8081/PriceManager/
+
+sudo kill -9 `ps -ef | grep /usr/share/tomcat7 | awk '{print $2}'`
+ps -ef | grep tomcat
+sudo kill -9 
+pid=`ps -ef | grep /home/user/apache-tomcat-7.0.42 | awk '{print $2}'`
+pid=`ps -ef | grep /home/user/apache-tomcat-7.0.63 | awk '{print $2}'`
+
+pid=`ps -ef | grep tomcat | awk '{print $2}'`
+pid=`ps -ef|grep java|grep Service.jar|awk '{print $2}'`
+echo $pid
+sudo kill -9 $pid
+
+---------------------------------------------------------------------
+Dubbo: .46 user@Didatour46
+/home/user/apache-tomcat-7.0.42/webapps
+sudo /home/user/apache-tomcat-7.0.42/bin/shutdown.sh
+sudo /home/user/apache-tomcat-7.0.42/bin/startup.sh
+tail -f -n 200 /home/user/apache-tomcat-7.0.42/logs/catalina.out
+sudo rm -rf /home/user/apache-tomcat-7.0.42/webapps/DubboService
+sudo rm -rf /home/user/apache-tomcat-7.0.42/logs/*
+
+sudo kill -9 `ps -ef | grep /home/user/apache-tomcat-7.0.42 | awk '{print $2}'`
+
+sudo ll
+Didatour46
+
+重启组合拳:
+sudo kill -9 `ps -ef | grep /home/user/apache-tomcat-7.0.42 | awk '{print $2}'`
+sudo /home/user/apache-tomcat-7.0.42/bin/startup.sh
+tail -f -n 200 /home/user/apache-tomcat-7.0.42/logs/catalina.out
+
+---------------------------------------------------------------------
+CC: .46 user@Didatour46
+/home/user/apache-tomcat-7.0.63/webapps
+sudo /home/user/apache-tomcat-7.0.63/bin/shutdown.sh
+sudo /home/user/apache-tomcat-7.0.63/bin/startup.sh
+tail -f -n 200 /home/user/apache-tomcat-7.0.63/logs/catalina.out
+sudo rm -rf /home/user/apache-tomcat-7.0.63/webapps/CallCenter
+
+sudo kill -9 `ps -ef | grep /home/user/apache-tomcat-7.0.63 | awk '{print $2}'`
+
+sudo ll
+Didatour46
+
+重启组合拳:
+sudo kill -9 `ps -ef | grep /home/user/apache-tomcat-7.0.63 | awk '{print $2}'`
+sudo /home/user/apache-tomcat-7.0.63/bin/startup.sh
+tail -f -n 200 /home/user/apache-tomcat-7.0.63/logs/catalina.out
+---------------------------------------------------------------------
+
+
+o: .46 user@Didatour46
+/opt/tomcat/webapps
+sudo /opt/tomcat/bin/shutdown.sh
+sudo /opt/tomcat/bin/startup.sh
+tail -f -n 200 /opt/tomcat/logs/catalina.out
+sudo rm -rf /opt/tomcat/webapps/newResManager
+sudo rm -rf /opt/tomcat/webapps/hotelcool_newinterface
+sudo rm -rf /opt/tomcat/webapps/PriceManager
+sudo rm -rf /opt/tomcat/webapps/finManager
+
+sudo kill -9 `ps -ef | grep /opt/tomcat | awk '{print $2}'`
+
+sudo ll
+Didatour46
+
+重启组合拳:
+sudo kill -9 `ps -ef | grep /opt/tomcat | awk '{print $2}'`
+sudo /opt/tomcat/bin/startup.sh
+tail -f -n 200 /opt/tomcat/logs/catalina.out
+---------------------------------------------------------------------
+zzy
+didatour
+sudo kill -9 `ps -ef | grep /opt/tomcat | awk '{print $2}'`
+sudo /opt/tomcat/bin/startup.sh
+tail -f -n 200 /opt/tomcat/logs/catalina.out
+
+
+
+.154 biding@111111
+redis:
+/opt/redis.2.8.15/src/redis-server 
+ps aux |grep redis
+sudo kill -9 `ps -ef | grep redis | awk '{print $2}'`
+
+.2 zzy@didatour
+zookeeper:
+/usr/share/zookeeper/bin
+ps aux |grep zookeeper
+
+.2 zzy@didatour
+Mongo:
+ps aux |grep mongo
+sudo kill -9 `ps -ef | grep mongo | awk '{print $2}'`
+sudo /opt/mongodb/bin/mongod -f /opt/mongodb/config/resinput.conf
+sudo /opt/mongodb/bin/mongos -f /opt/mongodb/config/mongods.conf
+
+
+.42
+
+
+zzy@TestingServer:/opt/mongodb.2.4.0/bin$ ps aux |grep mongo
+root      1907  0.9  0.3 685068 51816 ?        Sl   Mar22   6:47 /opt/mongodb/bin/mongod -f /opt/mongodb/config/mongodc.conf
+root      1961  0.9  0.1 177028 22364 ?        Sl   Mar22   6:40 /opt/mongodb/bin/mongos -f /opt/mongodb/config/mongods.conf
+root      2105  0.9  0.2 511976 33960 ?        Sl   Mar22   6:51 /opt/mongodb/bin/mongod -f /opt/mongodb/config/resinput.conf
+zzy      32076  0.0  0.0  11080   924 pts/2    S+   10:45   0:00 grep --color=auto mongo
+
+https://zhangxing.bingdian.com/TravelOnHand/api/user/register
+http://zhangxing.bingdian.com/TravelOnHand/index
+https://zhangxing.bingdian.com/TravelOnHand/index
+https://zhangxingtest.bingdian.com/TravelOnHand/api/user/register
+
+
+测试的：
+https://zhangxingtest.bingdian.com/TravelOnHand/index
+https://zhangxingtest.bingdian.com/TravelOnHand/login
+
+正式的：
+https://zhangxing.bingdian.com/TravelOnHand/index
+https://zhangxing.bingdian.com/TravelOnHand/login
+
+
+-----------------------------
+
+测试的：
+https://zhangxing.bingdian.com/TravelOnHand/login
+https://bktest.handtours.com/TravelOnHand/login
+=
+http://172.16.0.46:8084/TravelOnHand/login
+
+正式的：
+https://bk.handtours.com/TravelOnHand/login
+
+ps -ef | grep PushCenter.jar 
+
+测试的：
+https://bktest.handtours.com/TravelOnHand/login
+=
+http://172.16.0.46:8084/TravelOnHand/login
+
+正式的：
+https://bk.handtours.com/TravelOnHand/login
+
+
+db.TOH.User.remove({mobile:"18767105093"});
+mobile
+
+订单查询-操作-价格能改负数
+CC_searchorder_oper_uprice_underzero
+
+-h:指明数据库宿主机的IP
+-u:指明数据库的用户名
+-p:指明数据库的密码
+-d:指明数据库的名字
+-c:指明collection的名字
+-f:指明要导出那些列
+-o:指明到要导出的文件名
+-q:指明导出数据的过滤条件
+
+/opt/mongodb/bin/mongoexport -h 172.16.0.2:30000 -u client -p 12345 -d DidatourNew -c Order -o Order.dat
+
+/opt/mongodb/bin/mongoexport -h 172.16.0.2:30000 -u client -p 12345 -d DidatourNew -c Order -o Order.dat
+
+
+去哪儿token
+559508b5e4b0008acf8f59ac
+  "memberId" : "53be50fde4b0f18512aae131",
+  "entDocId" : "5247feeae4b05a1e81b6ede4",
+  db.Order.find({ "sourceId" : ObjectId("5247feeae4b05a1e81b6ede4"),"subscriber" : ObjectId("53be50fde4b0f18512aae131")})
+  
+  { "sourceId" : ObjectId("5247feeae4b05a1e81b6ede4"),"subscriber" : ObjectId("53be50fde4b0f18512aae131")}
+  
+  
+  
+  
+  db.Order.update({ "orderId" :"11124711"},{ "$set" :{"status":"CREQ"}});
+  CREQ
+
+ps -ef | grep zookeeper
+ps -ef | grep tomcat
+
+.2
+111111
+zookeeper,mongo
+ps -ef | grep tomcat
+ps aux |grep mongo
+-----
+sudo ll 
+didatour
+sudo kill -9 `ps -ef | grep zookeeper | awk '{print $2}'`
+sudo /usr/share/zookeeper/bin/zkServer.sh start
+
+sudo kill -9 `ps -ef | grep mongo | awk '{print $2}'`
+sudo /opt/mongodb/bin/mongod -f /opt/mongodb/config/resinput.conf
+sudo /opt/mongodb/bin/mongos -f /opt/mongodb/config/mongods.conf
+
+.154
+redis,
+-----
+sudo ll
+111111
+sudo kill -9 `ps -ef | grep redis | awk '{print $2}'`
+/opt/redis-2.8.17/src/redis-server
+
+.46
+tomcat x 3
+ps -ef | grep tomcat
+----
+sudo ll
+Didatour46
+sudo kill -9 `ps -ef | grep tomcat | awk '{print $2}'`
+sudo /home/user/apache-tomcat-7.0.42/bin/startup.sh
+tail -f -n 200 /home/user/apache-tomcat-7.0.42/logs/catalina.out
+
+sudo /home/user/apache-tomcat-7.0.63/bin/startup.sh
+sudo /home/user/travelOnHand-tomcat-7.0.63/bin/startup.sh
+sudo /opt/tomcat/bin/startup.sh
+
+sudo /home/user/PushCenterNew/stop.sh
+sudo /home/user/PushCenterNew/Service.sh
+
+
+
+
+
+
+
+
+tail -f -n 200 /home/user/apache-tomcat-7.0.42/logs/catalina.out
+
+chmod -R 777 /home/user/auth
+/home/user/auth
+
+
+#!/usr/bin/expect -f
+set password Didatour46
+set timeout -1
+
+spawn sudo ll
+
+expect "password"
+
+send "$password\r"
+
+interact
+
+
+
+--------------push provider-----------
+.2 /opt/tomcat/webapps/synchronizeData.war
+.2 /opt/provider-pushserver-1.0/bin/startPusher.sh        provider-pushserver-1.0.jar
+.2 /opt/provider-update-pusher-1.0/bin/startPusher.sh        provider-update-pusher-1.0.jar
+
+.46 /home/user/PushCenterNew Service.sh
